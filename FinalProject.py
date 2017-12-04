@@ -96,12 +96,26 @@ def get_user_interactions(user):
 
 		return facebook_results
 
+## Database consist of Users table		
+
+conn = sqlite3.connect('FinalProject.sqlite')
+cur = conn.cursor() #connects to database 
+
+cur.execute('DROP TABLE IF EXISTS User') #if table exists for users it will delete itself and make a new one 
+cur.execute('CREATE TABLE Users(user_id TEXT, user_likes TEXT,user_photo TEXT, user_videos TEXT)') #create database with these variables
+
+
 # facebook_interactions =
 # facebook_daysofinteractions =
 
 
 
+conn.commit() #save the changes 
 
+## query for all of the information in the Users database
+
+cur.execute('SELECT * FROM Users') #access the table of Users
+users_info = cur.fetchall() # get all of the information about users
 
 ##### INSTAGRAM SETUP CODE:
 # Authentication information should be in a instagram_info file
@@ -120,13 +134,71 @@ def get_user_interactions(user):
 ##### PINTEREST SETUP CODE:
 # Authentication information should be in a pinterest_info file
 
+PINTEREST_CLIENT_ID = "4937510988336347780"
+PINTEREST_CLIENT_SECRET = "19b9ff970a6789efae1a0933ec5f07cb9077c9886492f528b2c8b9eb45496db3"
+PINTEREST_GRANT_TYPE = "client_credentials"
 
+#function give us access to creating a token 
+
+class PinterestApi(object):
+	"""docstring for ClassName"""
+	def __init__(self, client_id, client_secret, grant_type):
+
+		self.client_id = client_id
+		self.client_secret = client_secret
+		self.grant_type = grant_type  
+
+#have access to client id, client secret, grant type because these variables are in the class "self"
+	def access_token(self):
+
+		access_token_url = "https://api.pinterest.com/oauth/access_token?" #request will always know to look for a url 
+
+		#can only access dictuionary for api
+
+		param = {"client_id" : self.client_id, "client_secret" : self.client_secret ,"grant_type" : self.grant_type} #have to use key word params because it will recognize it 
+
+		r = requests.get(access_token_url,params = param) 
+
+		return r.json()['access_token']
+
+test = FacebookGraphApi(PINTEREST_CLIENT_ID, PINTEREST_CLIENT_SECRET, PINTEREST_GRANT_TYPE)
+
+pinterstaccesstoken = test.access_token()
+
+print(pinterestaccesstoken)
 
 
 ##### END PINTEREST SETUP CODE:
 
+##### PINTEREST INTERACTIONS 
 
-#PINTEREST
+# get_user_interaction 
+
+def get_pinterest_user_interactions(user):
+
+	if user in CACHE_DICTION:
+		print('cached')
+		facebook_results = CACHE_DICTION[user] # grab data from cache
+
+	else:
+		print('getting data from internet') 
+		user = graph.get_object(id = user_id)
+		print (user['likes'])
+
+		print(facebook_results)
+
+		CACHE_DICTION[user] = facebook_results # save facebook results into cache
+		sd = json.dumps(CACHE_DICTION) #save it using json 
+		cache_file = open(CACHE_FNAME, 'w') #open up file 
+		cache_file.write(jsd)# show file in a way that user can see it, string
+		cache_file.close() #ends file, close it 
+
+
+		return pinterest_results
+
+		
+
+
 
 #GROUPME
 
