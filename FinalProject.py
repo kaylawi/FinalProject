@@ -95,6 +95,7 @@ def get_user_interactions(user):
 
 
 		return facebook_results
+\
 
 ## Database consist of Users table		
 
@@ -105,17 +106,19 @@ cur.execute('DROP TABLE IF EXISTS User') #if table exists for users it will dele
 cur.execute('CREATE TABLE Users(user_id TEXT, user_likes TEXT,user_photo TEXT, user_videos TEXT)') #create database with these variables
 
 
-# facebook_interactions =
-# facebook_daysofinteractions =
-
-
-
 conn.commit() #save the changes 
 
 ## query for all of the information in the Users database
 
 cur.execute('SELECT * FROM Users') #access the table of Users
 users_info = cur.fetchall() # get all of the information about users
+
+## access exactly 100 interactions 
+
+data = 'SELECT * FROM Users WHERE user_id == 100' # saves 100 names 
+cur.execute(data) # access user names of the users from the table of Users
+anything = cur.fetchall() # gets all information about names
+
 
 ##### INSTAGRAM SETUP CODE:
 # Authentication information should be in a instagram_info file
