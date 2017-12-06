@@ -123,9 +123,15 @@ anything = cur.fetchall() # gets all information about names
 ##### INSTAGRAM SETUP CODE:
 # Authentication information should be in a instagram_info file
 
+INSTAGRAM_CLIENT_ID =
+INSTAGRAM_CLIET_SECRET = 
+INSTAGRAM_GRANT_TYPE = 
+INSTAGRAM_REDIRECT_URL = 
+CODE = 
 
 
 
+access_token_url = 'https://api.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=code'
 
 
 ##### END INSTAGRAM SET UP CODE 
@@ -164,7 +170,7 @@ class PinterestApi(object):
 
 		return r.json()['access_token']
 
-test = FacebookGraphApi(PINTEREST_CLIENT_ID, PINTEREST_CLIENT_SECRET, PINTEREST_GRANT_TYPE)
+test = PinterestApi(PINTEREST_CLIENT_ID, PINTEREST_CLIENT_SECRET, PINTEREST_GRANT_TYPE)
 
 pinterstaccesstoken = test.access_token()
 
@@ -203,7 +209,7 @@ def get_pinterest_user_interactions(user):
 
 
 
-#GROUPME
+#DROPBOX
 
 
-#GMAIL
+#SPOTIFY
