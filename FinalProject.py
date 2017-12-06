@@ -11,6 +11,7 @@ import collections
 import json
 import sqlite3 
 import facebook
+import spotipy 
 
 ##Your name: Kayla Williams
 
@@ -95,7 +96,7 @@ def get_user_interactions(user):
 
 
 		return facebook_results
-\
+
 
 ## Database consist of Users table		
 
@@ -129,6 +130,15 @@ INSTAGRAM_GRANT_TYPE =
 INSTAGRAM_REDIRECT_URL = 
 CODE = 
 
+class InstagramApi(object):
+	def_init_(self, client_id, client_secret, grant_type, redirect_url, code):
+
+		self.client_id = client_id
+		self.client_secret = client_secret
+		self.grant_type = grant_type  
+		self.redirect_url = redirect_url
+
+	def access_token(self):
 
 
 access_token_url = 'https://api.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=code'
@@ -141,7 +151,7 @@ access_token_url = 'https://api.instagram.com/oauth/authorize/?client_id=CLIENT-
 
 
 ##### PINTEREST SETUP CODE:
-# Authentication information should be in a pinterest_info file
+##Authentication information should be in a pinterest_info file
 
 PINTEREST_CLIENT_ID = "4937510988336347780"
 PINTEREST_CLIENT_SECRET = "19b9ff970a6789efae1a0933ec5f07cb9077c9886492f528b2c8b9eb45496db3"
@@ -158,6 +168,7 @@ class PinterestApi(object):
 		self.grant_type = grant_type  
 
 #have access to client id, client secret, grant type because these variables are in the class "self"
+
 	def access_token(self):
 
 		access_token_url = "https://api.pinterest.com/oauth/access_token?" #request will always know to look for a url 
@@ -177,11 +188,11 @@ pinterstaccesstoken = test.access_token()
 print(pinterestaccesstoken)
 
 
-##### END PINTEREST SETUP CODE:
+#### END PINTEREST SETUP CODE:
 
-##### PINTEREST INTERACTIONS 
+#### PINTEREST INTERACTIONS 
 
-# get_user_interaction 
+get_user_interaction 
 
 def get_pinterest_user_interactions(user):
 
@@ -213,3 +224,17 @@ def get_pinterest_user_interactions(user):
 
 
 #SPOTIFY
+
+
+
+##### SPOTIFY SETUP CODE:
+
+
+export SPOTIPY_CLIENT_ID=' e4a316bf49ac46ccbbf03d2fc27a89c1'
+export SPOTIPY_CLIENT_SECRET=' 9db5f1f2cc4e473caeeb7a283bf6dc64'
+export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
+
+
+
+##### END SPOTIFY SETUP CODE:
+
