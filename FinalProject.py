@@ -135,8 +135,8 @@ anything = cur.fetchall() # gets all information about names
 ##### INSTAGRAM SETUP CODE:
 # Authentication information should be in a instagram_info file
 
-# INSTAGRAM_CLIENT_ID = 	'f17bcf1115da4f43a40ed2799de13431' 
-# INSTAGRAM_CLIET_SECRET = 'd799e3070784490fa0652646858a05a7'
+# INSTAGRAM_CLIENT_ID = 	'instagram_info.INSTAGRAM_CLIENT_ID' 
+# INSTAGRAM_CLIET_SECRET = 'instagram_info.INSTAGRAM_CLIENT_SECRET'
 # #INSTAGRAM_GRANT_TYPE = 
 # #INSTAGRAM_REDIRECT_URL = 
 # #CODE = 
@@ -175,8 +175,8 @@ anything = cur.fetchall() # gets all information about names
 ##### PINTEREST SETUP CODE:
 ##Authentication information should be in a pinterest_info file
 
-# PINTEREST_CLIENT_ID = "4937510988336347780"
-# PINTEREST_CLIENT_SECRET = "19b9ff970a6789efae1a0933ec5f07cb9077c9886492f528b2c8b9eb45496db3"
+# PINTEREST_CLIENT_ID = "pinterest_info.PINTEREST_CLIENT_ID"
+# PINTEREST_CLIENT_SECRET = "pinterest_info.PINTEREST_CLIENT_SECRET"
 # PINTEREST_GRANT_TYPE = "client_credentials"
 
 #function give us access to creating a token 
@@ -253,8 +253,8 @@ anything = cur.fetchall() # gets all information about names
 
 # token = util.prompt_for_user_token('Kayla Williams','user-top-read')
 
-# export SPOTIPY_CLIENT_ID = 'e4a316bf49ac46ccbbf03d2fc27a89c1'
-# export SPOTIPY_CLIENT_SECRET = '9db5f1f2cc4e473caeeb7a283bf6dc64'
+# export SPOTIPY_CLIENT_ID = 'spotify_info.SPOTIFY_CLIENT_ID'
+# export SPOTIPY_CLIENT_SECRET = 'spotify_info.SPOTIPY_CLIENT_SECRET'
 #export SPOTIPY_REDIRECT_URI ='your-app-redirect-url'
 
 
