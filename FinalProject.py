@@ -116,10 +116,17 @@ users_info = cur.fetchall() # get all of the information about users
 
 ## access exactly 100 interactions 
 
-data = 'SELECT 100 FROM Users WHERE user_id' # saves 100 names 
+data = 'SELECT * FROM Users WHERE user_id = LIMIT 100' # saves 100 names 
 cur.execute(data) # access user names of the users from the table of Users
 anything = cur.fetchall() # gets all information about names
 
+data = 'SELECT 100 FROM Users WHERE user_likes' # saves 100 likes
+cur.execute(data) # access user names of the users from the table of Users
+anything = cur.fetchall() # gets all information about names
+
+data = 'SELECT 100 FROM Users WHERE user_id' # saves 100 photos
+cur.execute(data) # access user names of the users from the table of Users
+anything = cur.fetchall() # gets all information about names
 
 ##### INSTAGRAM SETUP CODE:
 # Authentication information should be in a instagram_info file
@@ -229,10 +236,11 @@ anything = cur.fetchall() # gets all information about names
 
 ##### SPOTIFY SETUP CODE:
 
+# token = util.prompt_for_user_token('Kayla Williams','user-top-read')
 
-# export SPOTIPY_CLIENT_ID= 'e4a316bf49ac46ccbbf03d2fc27a89c1'
-# export SPOTIPY_CLIENT_SECRET= '9db5f1f2cc4e473caeeb7a283bf6dc64'
-# export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
+# export SPOTIPY_CLIENT_ID = 'e4a316bf49ac46ccbbf03d2fc27a89c1'
+# export SPOTIPY_CLIENT_SECRET = '9db5f1f2cc4e473caeeb7a283bf6dc64'
+#export SPOTIPY_REDIRECT_URI ='your-app-redirect-url'
 
 
 
