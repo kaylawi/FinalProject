@@ -11,7 +11,9 @@ import collections
 import json
 import sqlite3 
 import facebook
-import spotipy 
+import facebook_info
+# import spotipy 
+# import InstagramAPI
 
 ##Your name: Kayla Williams
 
@@ -33,9 +35,9 @@ except:
 #get access to access token 
 #have to create token because it is temporary and want access to it forever, therefore request is helpful as it gives information whenever we want it
 
-FACEBOOK_CLIENT_ID = "1337849729677917"
-FACEBOOK_CLIENT_SECRET = "5846902fff872568a63e7fe328b01f37"
-FACEBOOK_GRANT_TYPE = "client_credentials"
+FACEBOOK_CLIENT_ID = facebook_info.FACEBOOK_CLIENT_ID
+FACEBOOK_CLIENT_SECRET = facebook_info.FACEBOOK_CLIENT_SECRET
+FACEBOOK_GRANT_TYPE = facebook_info.FACEBOOK_GRANT_TYPE
 
 #function give us access to creating a token 
 
@@ -64,7 +66,7 @@ test = FacebookGraphApi(FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET, FACEBOOK_GRA
 
 facebookaccesstoken = test.access_token()
 
-print(facebookaccesstoken)
+#print(facebookaccesstoken)
 
 
 graph = facebook.GraphAPI(access_token = facebookaccesstoken, version = "2.11")
@@ -83,7 +85,7 @@ def get_user_interactions(user):
 
 	else:
 		print('getting data from internet') 
-		user = graph.get_object(id = user_id)
+		user = graph.get_object(id = user_id,count = 100)
 		print (user['likes'])
 
 		print(facebook_results)
@@ -98,13 +100,15 @@ def get_user_interactions(user):
 		return facebook_results
 
 
+data = get_user_interactions('Kayla Williams')
+
 ## Database consist of Users table		
 
 conn = sqlite3.connect('FinalProject.sqlite')
 cur = conn.cursor() #connects to database 
 
 cur.execute('DROP TABLE IF EXISTS Users') #if table exists for users it will delete itself and make a new one 
-cur.execute('CREATE TABLE Users(user_id TEXT, user_likes TEXT,user_photo TEXT, user_videos TEXT)') #create database with these variables
+cur.execute('CREATE TABLE Users(user_id TEXT, user_likes INTEGER,user_photo TEXT)') #create database with these variables
 
 
 conn.commit() #save the changes 
@@ -120,23 +124,34 @@ data = 'SELECT * FROM Users WHERE user_id LIMIT 100' # saves 100 names
 cur.execute(data) # access user names of the users from the table of Users
 anything = cur.fetchall() # gets all information about names
 
-data = 'SELECT 100 FROM Users WHERE user_likes LIMIT 100' # saves 100 likes
-cur.execute(data) # access user names of the users from the table of Users
-anything = cur.fetchall() # gets all information about names
+# data = 'SELECT 100 FROM Users WHERE user_likes LIMIT 100' # saves 100 likes
+# cur.execute(data) # access user names of the users from the table of Users
+# anything = cur.fetchall() # gets all information about names
 
-data = 'SELECT 100 FROM Users WHERE user_id LIMIT 100' # saves 100 photos
-cur.execute(data) # access user names of the users from the table of Users
-anything = cur.fetchall() # gets all information about names
+# data = 'SELECT 100 FROM Users WHERE user_id LIMIT 100' # saves 100 photos
+# cur.execute(data) # access user names of the users from the table of Users
+# anything = cur.fetchall() # gets all information about names
 
 ##### INSTAGRAM SETUP CODE:
 # Authentication information should be in a instagram_info file
 
-#INSTAGRAM_CLIENT_ID =
-#INSTAGRAM_CLIET_SECRET = 
-#INSTAGRAM_GRANT_TYPE = 
-#INSTAGRAM_REDIRECT_URL = 
-#CODE = 
+# INSTAGRAM_CLIENT_ID = 	'f17bcf1115da4f43a40ed2799de13431' 
+# INSTAGRAM_CLIET_SECRET = 'd799e3070784490fa0652646858a05a7'
+# #INSTAGRAM_GRANT_TYPE = 
+# #INSTAGRAM_REDIRECT_URL = 
+# #CODE = 
 
+# access_token = "YOUR_ACCESS_TOKEN"
+# client_secret = "YOUR_CLIENT_SECRET"
+# api = InstagramAPI(access_token=access_token, client_secret=client_secret)
+# recent_media, next_ = api.user_recent_media(user_id="userid", count=10)
+# for media in recent_media:
+#    print media.caption.text
+
+#    api = InstagramAPI(client_id='YOUR_CLIENT_ID', client_secret='YOUR_CLIENT_SECRET')
+# popular_media = api.media_popular(count=20)
+# for media in popular_media:
+#     print media.images['standard_resolution'].url
 # class InstagramApi(object):
 # 	def_init_(self, client_id, client_secret, grant_type, redirect_url, code):
 
@@ -242,6 +257,13 @@ anything = cur.fetchall() # gets all information about names
 # export SPOTIPY_CLIENT_SECRET = '9db5f1f2cc4e473caeeb7a283bf6dc64'
 #export SPOTIPY_REDIRECT_URI ='your-app-redirect-url'
 
+
+# import spotipy
+# sp = spotipy.Spotify()
+
+# results = sp.search(q='weezer', limit=20)
+# for i, t in enumerate(results['tracks']['items']):
+#     print ' ', i, t['name']
 
 
 ##### END SPOTIFY SETUP CODE:
