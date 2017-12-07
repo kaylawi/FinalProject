@@ -103,7 +103,7 @@ def get_user_interactions(user):
 conn = sqlite3.connect('FinalProject.sqlite')
 cur = conn.cursor() #connects to database 
 
-cur.execute('DROP TABLE IF EXISTS User') #if table exists for users it will delete itself and make a new one 
+cur.execute('DROP TABLE IF EXISTS Users') #if table exists for users it will delete itself and make a new one 
 cur.execute('CREATE TABLE Users(user_id TEXT, user_likes TEXT,user_photo TEXT, user_videos TEXT)') #create database with these variables
 
 
@@ -116,7 +116,7 @@ users_info = cur.fetchall() # get all of the information about users
 
 ## access exactly 100 interactions 
 
-data = 'SELECT * FROM Users WHERE user_id == 100' # saves 100 names 
+data = 'SELECT 100 FROM Users WHERE user_id' # saves 100 names 
 cur.execute(data) # access user names of the users from the table of Users
 anything = cur.fetchall() # gets all information about names
 
@@ -124,24 +124,24 @@ anything = cur.fetchall() # gets all information about names
 ##### INSTAGRAM SETUP CODE:
 # Authentication information should be in a instagram_info file
 
-INSTAGRAM_CLIENT_ID =
-INSTAGRAM_CLIET_SECRET = 
-INSTAGRAM_GRANT_TYPE = 
-INSTAGRAM_REDIRECT_URL = 
-CODE = 
+#INSTAGRAM_CLIENT_ID =
+#INSTAGRAM_CLIET_SECRET = 
+#INSTAGRAM_GRANT_TYPE = 
+#INSTAGRAM_REDIRECT_URL = 
+#CODE = 
 
-class InstagramApi(object):
-	def_init_(self, client_id, client_secret, grant_type, redirect_url, code):
+# class InstagramApi(object):
+# 	def_init_(self, client_id, client_secret, grant_type, redirect_url, code):
 
-		self.client_id = client_id
-		self.client_secret = client_secret
-		self.grant_type = grant_type  
-		self.redirect_url = redirect_url
+# 		self.client_id = client_id
+# 		self.client_secret = client_secret
+# 		self.grant_type = grant_type  
+# 		self.redirect_url = redirect_url
 
-	def access_token(self):
+# 	def access_token(self):
 
 
-access_token_url = 'https://api.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=code'
+# access_token_url = 'https://api.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=code'
 
 
 ##### END INSTAGRAM SET UP CODE 
@@ -153,68 +153,68 @@ access_token_url = 'https://api.instagram.com/oauth/authorize/?client_id=CLIENT-
 ##### PINTEREST SETUP CODE:
 ##Authentication information should be in a pinterest_info file
 
-PINTEREST_CLIENT_ID = "4937510988336347780"
-PINTEREST_CLIENT_SECRET = "19b9ff970a6789efae1a0933ec5f07cb9077c9886492f528b2c8b9eb45496db3"
-PINTEREST_GRANT_TYPE = "client_credentials"
+# PINTEREST_CLIENT_ID = "4937510988336347780"
+# PINTEREST_CLIENT_SECRET = "19b9ff970a6789efae1a0933ec5f07cb9077c9886492f528b2c8b9eb45496db3"
+# PINTEREST_GRANT_TYPE = "client_credentials"
 
 #function give us access to creating a token 
 
-class PinterestApi(object):
-	"""docstring for ClassName"""
-	def __init__(self, client_id, client_secret, grant_type):
+# class PinterestApi(object):
+# 	"""docstring for ClassName"""
+# 	def __init__(self, client_id, client_secret, grant_type):
 
-		self.client_id = client_id
-		self.client_secret = client_secret
-		self.grant_type = grant_type  
+# 		self.client_id = client_id
+# 		self.client_secret = client_secret
+# 		self.grant_type = grant_type  
 
-#have access to client id, client secret, grant type because these variables are in the class "self"
+# #have access to client id, client secret, grant type because these variables are in the class "self"
 
-	def access_token(self):
+# 	def access_token(self):
 
-		access_token_url = "https://api.pinterest.com/oauth/access_token?" #request will always know to look for a url 
+# 		access_token_url = "https://api.pinterest.com/oauth/access_token?" #request will always know to look for a url 
 
-		#can only access dictuionary for api
+# 		#can only access dictuionary for api
 
-		param = {"client_id" : self.client_id, "client_secret" : self.client_secret ,"grant_type" : self.grant_type} #have to use key word params because it will recognize it 
+# 		param = {"client_id" : self.client_id, "client_secret" : self.client_secret ,"grant_type" : self.grant_type} #have to use key word params because it will recognize it 
 
-		r = requests.get(access_token_url,params = param) 
+# 		r = requests.get(access_token_url,params = param) 
 
-		return r.json()['access_token']
+# 		return r.json()['access_token']
 
-test = PinterestApi(PINTEREST_CLIENT_ID, PINTEREST_CLIENT_SECRET, PINTEREST_GRANT_TYPE)
+# test = PinterestApi(PINTEREST_CLIENT_ID, PINTEREST_CLIENT_SECRET, PINTEREST_GRANT_TYPE)
 
-pinterstaccesstoken = test.access_token()
+# pinterstaccesstoken = test.access_token()
 
-print(pinterestaccesstoken)
+# print(pinterestaccesstoken)
 
 
 #### END PINTEREST SETUP CODE:
 
 #### PINTEREST INTERACTIONS 
 
-get_user_interaction 
+# get_user_interaction 
 
-def get_pinterest_user_interactions(user):
+# def get_pinterest_user_interactions(user):
 
-	if user in CACHE_DICTION:
-		print('cached')
-		facebook_results = CACHE_DICTION[user] # grab data from cache
+# 	if user in CACHE_DICTION:
+# 		print('cached')
+# 		facebook_results = CACHE_DICTION[user] # grab data from cache
 
-	else:
-		print('getting data from internet') 
-		user = graph.get_object(id = user_id)
-		print (user['likes'])
+# 	else:
+# 		print('getting data from internet') 
+# 		user = graph.get_object(id = user_id)
+# 		print (user['likes'])
 
-		print(facebook_results)
+# 		print(facebook_results)
 
-		CACHE_DICTION[user] = facebook_results # save facebook results into cache
-		sd = json.dumps(CACHE_DICTION) #save it using json 
-		cache_file = open(CACHE_FNAME, 'w') #open up file 
-		cache_file.write(jsd)# show file in a way that user can see it, string
-		cache_file.close() #ends file, close it 
+# 		CACHE_DICTION[user] = facebook_results # save facebook results into cache
+# 		sd = json.dumps(CACHE_DICTION) #save it using json 
+# 		cache_file = open(CACHE_FNAME, 'w') #open up file 
+# 		cache_file.write(jsd)# show file in a way that user can see it, string
+# 		cache_file.close() #ends file, close it 
 
 
-		return pinterest_results
+# 		return pinterest_results
 
 		
 
@@ -230,9 +230,9 @@ def get_pinterest_user_interactions(user):
 ##### SPOTIFY SETUP CODE:
 
 
-export SPOTIPY_CLIENT_ID=' e4a316bf49ac46ccbbf03d2fc27a89c1'
-export SPOTIPY_CLIENT_SECRET=' 9db5f1f2cc4e473caeeb7a283bf6dc64'
-export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
+# export SPOTIPY_CLIENT_ID= 'e4a316bf49ac46ccbbf03d2fc27a89c1'
+# export SPOTIPY_CLIENT_SECRET= '9db5f1f2cc4e473caeeb7a283bf6dc64'
+# export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
 
 
 
