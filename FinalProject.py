@@ -116,15 +116,15 @@ users_info = cur.fetchall() # get all of the information about users
 
 ## access exactly 100 interactions 
 
-data = 'SELECT * FROM Users WHERE user_id = LIMIT 100' # saves 100 names 
+data = 'SELECT * FROM Users WHERE user_id LIMIT 100' # saves 100 names 
 cur.execute(data) # access user names of the users from the table of Users
 anything = cur.fetchall() # gets all information about names
 
-data = 'SELECT 100 FROM Users WHERE user_likes' # saves 100 likes
+data = 'SELECT 100 FROM Users WHERE user_likes LIMIT 100' # saves 100 likes
 cur.execute(data) # access user names of the users from the table of Users
 anything = cur.fetchall() # gets all information about names
 
-data = 'SELECT 100 FROM Users WHERE user_id' # saves 100 photos
+data = 'SELECT 100 FROM Users WHERE user_id LIMIT 100' # saves 100 photos
 cur.execute(data) # access user names of the users from the table of Users
 anything = cur.fetchall() # gets all information about names
 
