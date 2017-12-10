@@ -10,10 +10,12 @@ import itertools
 import collections
 import json
 import sqlite3 
+import omdb
 import facebook
 import facebook_info
-# import spotipy 
-# import InstagramAPI
+import omdb_info
+#import googlemaps 
+
 
 ##Your name: Kayla Williams
 
@@ -29,242 +31,101 @@ try:
 except:
 	CACHE_DICTION = {} # creates a new variable for it 
 
+
+##### SETUP CODE:
+# Authentication information should be in OMDb_info file
+
+# access_token = omdb_info.access_token 
+
+
 ##### FACEBOOK SETUP CODE:
 # Authentication information should be in a facebook_info file...
 
-#get access to access token 
-#have to create token because it is temporary and want access to it forever, therefore request is helpful as it gives information whenever we want it
+access_token = facebook_info.FACEBOOK_access_token
 
-FACEBOOK_CLIENT_ID = facebook_info.FACEBOOK_CLIENT_ID
-FACEBOOK_CLIENT_SECRET = facebook_info.FACEBOOK_CLIENT_SECRET
-FACEBOOK_GRANT_TYPE = facebook_info.FACEBOOK_GRANT_TYPE
-
-#function give us access to creating a token 
-
-class FacebookGraphApi(object):
-	"""docstring for ClassName"""
-	def __init__(self, client_id, client_secret, grant_type):
-
-		self.client_id = client_id
-		self.client_secret = client_secret
-		self.grant_type = grant_type  
-
-#have access to client id, client secret, grant type because these variables are in the class "self"
-	def access_token(self):
-
-		access_token_url = "https://graph.facebook.com/oauth/access_token?" #request will always know to look for a url 
-
-		#can only access dictuionary for api
-
-		param = {"client_id" : self.client_id, "client_secret" : self.client_secret ,"grant_type" : self.grant_type} #have to use key word params because it will recognize it 
-
-		r = requests.get(access_token_url,params = param) 
-
-		return r.json()['access_token']
-
-test = FacebookGraphApi(FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET, FACEBOOK_GRANT_TYPE)
-
-facebookaccesstoken = test.access_token()
-
-#print(facebookaccesstoken)
+graph = facebook.GraphAPI(access_token)
+user = graph.get_object('me') 
+print(user)
 
 
-graph = facebook.GraphAPI(access_token = facebookaccesstoken, version = "2.11")
 
-##### END FACEBOOK SET UP CODE
+# ##### END FACEBOOK SET UP CODE
 
-##### FACEBOOK INTERACTIONS 
+# ##### FACEBOOK INTERACTIONS 
 
-# get_user_interaction 
 
 def get_user_interactions(user):
+
 
 	if user in CACHE_DICTION:
 		print('cached')
 		facebook_results = CACHE_DICTION[user] # grab data from cache
-
 	else:
 		print('getting data from internet') 
-		user = graph.get_object(id = user_id,count = 100)
-		print (user['likes'])
+		facebook_results = graph.get_object(id = user)
+		
+		all_fields = ['message', 'created_time', 'description', 'caption', 'link', 'place', 'status_type']
+		all_fields = ','.join(all_fields)
+		posts = graph.get_connections(id = 'me', connection_name = 'posts', fields = all_fields) # + posts['paging']['cursors']['after'])
+		posts = requests.get(posts['paging']['next']).json() #attempt to make a request to next page of data,if exists
+		print(posts) 
 
-		print(facebook_results)
 
-		CACHE_DICTION[user] = facebook_results # save facebook results into cache
-		sd = json.dumps(CACHE_DICTION) #save it using json 
+		CACHE_DICTION[user] = posts # save user results into cache
+		jsd = json.dumps(CACHE_DICTION) #save it using json 
 		cache_file = open(CACHE_FNAME, 'w') #open up file 
 		cache_file.write(jsd)# show file in a way that user can see it, string
 		cache_file.close() #ends file, close it 
 
 
-		return facebook_results
-
-
-data = get_user_interactions('Kayla Williams')
-
-## Database consist of Users table		
-
-conn = sqlite3.connect('FinalProject.sqlite')
-cur = conn.cursor() #connects to database 
-
-cur.execute('DROP TABLE IF EXISTS Users') #if table exists for users it will delete itself and make a new one 
-cur.execute('CREATE TABLE Users(user_id TEXT, user_likes INTEGER,user_photo TEXT)') #create database with these variables
-
-
-conn.commit() #save the changes 
-
-## query for all of the information in the Users database
-
-cur.execute('SELECT * FROM Users') #access the table of Users
-users_info = cur.fetchall() # get all of the information about users
-
-## access exactly 100 interactions 
-
-data = 'SELECT * FROM Users WHERE user_id LIMIT 100' # saves 100 names 
-cur.execute(data) # access user names of the users from the table of Users
-anything = cur.fetchall() # gets all information about names
-
-# data = 'SELECT 100 FROM Users WHERE user_likes LIMIT 100' # saves 100 likes
-# cur.execute(data) # access user names of the users from the table of Users
-# anything = cur.fetchall() # gets all information about names
-
-# data = 'SELECT 100 FROM Users WHERE user_id LIMIT 100' # saves 100 photos
-# cur.execute(data) # access user names of the users from the table of Users
-# anything = cur.fetchall() # gets all information about names
-
-##### INSTAGRAM SETUP CODE:
-# Authentication information should be in a instagram_info file
-
-# INSTAGRAM_CLIENT_ID = 	'instagram_info.INSTAGRAM_CLIENT_ID' 
-# INSTAGRAM_CLIET_SECRET = 'instagram_info.INSTAGRAM_CLIENT_SECRET'
-# #INSTAGRAM_GRANT_TYPE = 
-# #INSTAGRAM_REDIRECT_URL = 
-# #CODE = 
-
-# access_token = "YOUR_ACCESS_TOKEN"
-# client_secret = "YOUR_CLIENT_SECRET"
-# api = InstagramAPI(access_token=access_token, client_secret=client_secret)
-# recent_media, next_ = api.user_recent_media(user_id="userid", count=10)
-# for media in recent_media:
-#    print media.caption.text
-
-#    api = InstagramAPI(client_id='YOUR_CLIENT_ID', client_secret='YOUR_CLIENT_SECRET')
-# popular_media = api.media_popular(count=20)
-# for media in popular_media:
-#     print media.images['standard_resolution'].url
-# class InstagramApi(object):
-# 	def_init_(self, client_id, client_secret, grant_type, redirect_url, code):
-
-# 		self.client_id = client_id
-# 		self.client_secret = client_secret
-# 		self.grant_type = grant_type  
-# 		self.redirect_url = redirect_url
-
-# 	def access_token(self):
-
-
-# access_token_url = 'https://api.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=code'
-
-
-##### END INSTAGRAM SET UP CODE 
-
-
-
-
-
-##### PINTEREST SETUP CODE:
-##Authentication information should be in a pinterest_info file
-
-# PINTEREST_CLIENT_ID = "pinterest_info.PINTEREST_CLIENT_ID"
-# PINTEREST_CLIENT_SECRET = "pinterest_info.PINTEREST_CLIENT_SECRET"
-# PINTEREST_GRANT_TYPE = "client_credentials"
-
-#function give us access to creating a token 
-
-# class PinterestApi(object):
-# 	"""docstring for ClassName"""
-# 	def __init__(self, client_id, client_secret, grant_type):
-
-# 		self.client_id = client_id
-# 		self.client_secret = client_secret
-# 		self.grant_type = grant_type  
-
-# #have access to client id, client secret, grant type because these variables are in the class "self"
-
-# 	def access_token(self):
-
-# 		access_token_url = "https://api.pinterest.com/oauth/access_token?" #request will always know to look for a url 
-
-# 		#can only access dictuionary for api
-
-# 		param = {"client_id" : self.client_id, "client_secret" : self.client_secret ,"grant_type" : self.grant_type} #have to use key word params because it will recognize it 
-
-# 		r = requests.get(access_token_url,params = param) 
-
-# 		return r.json()['access_token']
-
-# test = PinterestApi(PINTEREST_CLIENT_ID, PINTEREST_CLIENT_SECRET, PINTEREST_GRANT_TYPE)
-
-# pinterstaccesstoken = test.access_token()
-
-# print(pinterestaccesstoken)
-
-
-#### END PINTEREST SETUP CODE:
-
-#### PINTEREST INTERACTIONS 
-
-# get_user_interaction 
-
-# def get_pinterest_user_interactions(user):
-
-# 	if user in CACHE_DICTION:
-# 		print('cached')
-# 		facebook_results = CACHE_DICTION[user] # grab data from cache
-
-# 	else:
-# 		print('getting data from internet') 
-# 		user = graph.get_object(id = user_id)
-# 		print (user['likes'])
-
-# 		print(facebook_results)
-
-# 		CACHE_DICTION[user] = facebook_results # save facebook results into cache
-# 		sd = json.dumps(CACHE_DICTION) #save it using json 
-# 		cache_file = open(CACHE_FNAME, 'w') #open up file 
-# 		cache_file.write(jsd)# show file in a way that user can see it, string
-# 		cache_file.close() #ends file, close it 
-
-
-# 		return pinterest_results
-
-		
-
-
-
-#DROPBOX
-
-
-#SPOTIFY
-
-
-
-##### SPOTIFY SETUP CODE:
-
-# token = util.prompt_for_user_token('Kayla Williams','user-top-read')
-
-# export SPOTIPY_CLIENT_ID = 'spotify_info.SPOTIFY_CLIENT_ID'
-# export SPOTIPY_CLIENT_SECRET = 'spotify_info.SPOTIPY_CLIENT_SECRET'
-#export SPOTIPY_REDIRECT_URI ='your-app-redirect-url'
-
-
-# import spotipy
-# sp = spotipy.Spotify()
-
-# results = sp.search(q='weezer', limit=20)
-# for i, t in enumerate(results['tracks']['items']):
-#     print ' ', i, t['name']
-
-
-##### END SPOTIFY SETUP CODE:
+	return facebook_results 
+data = get_user_interactions(user['id'])
+
+  ## Database consist of Users table		
+
+# conn = sqlite3.connect('FinalProject.sqlite')
+# cur = conn.cursor() #connects to database 
+
+# cur.execute('DROP TABLE IF EXISTS Users') #if table exists for users it will delete itself and make a new one 
+# cur.execute('CREATE TABLE Users(post_id TEXT, post_message TEXT,post_createtime DATETIME, post_caption TEXT, post_link TEXT, post_place TEXT, post_status_type TEXT)') #create database with these variables
+
+# for post in data:
+# 	print(type(post))
+# 	f = "INSERT OR IGNORE INTO Users VALUES (?,?,?,?,?)"
+# 	tup =(post['id_str'], post['status_type'], post['place_Place'], post['message_string'],post['caption_string'])
+# 	cur.execute(f,tup) # creates database for facebook 
+
+# 	for use in post:
+# 		u = api.get_user(use['id'])
+# 		s = "INSERT OR IGNORE INTO Users Values(?,?,?,?)"
+# 		tup2 = (user_id, user_message, user_createtime, user_caption, user_link, user_place, user_status_type)
+# 		cur.execute(s, tup2) #creates database for table 
+
+# conn.commit() #save the changes 
+
+# ## query for all of the information in the Users database
+# cur.execute('SELECT * FROM Users') #access the table of Users
+# users_info = cur.fetchall() # get all of the information about users
+
+### OMDB
+url = omdb_info.OMDB_ACCESS_TOKEN
+
+def get_movie_info():
+	if 'movie_info' in CACHE_DICTION:
+		movie_info = CACHE_DICTION['movie_info']
+		#print(movie_info)
+	else:
+		movie_info = []
+		for movie in omdb_info.movie_titles:
+			print(movie)
+			movie_info.append(json.loads(requests.get(url + movie).text))
+
+		CACHE_DICTION['movie_info'] = movie_info # save user results into cache
+		jsd = json.dumps(CACHE_DICTION) #save it using json 
+		cache_file = open(CACHE_FNAME, 'w') #open up file 
+		cache_file.write(jsd)# show file in a way that user can see it, string
+		cache_file.close() #ends file, close it 
+
+get_movie_info()
+	
 

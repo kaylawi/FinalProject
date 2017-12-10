@@ -1,0 +1,25 @@
+OMDB_ACCESS_TOKEN= 'http://www.omdbapi.com/?i=tt3896198&apikey=d4afab83'
+
+
+movie_titles = ['White Chicks', 'Elf', 'Mission Impossible', 'Suicide Squad', 'Man Bites Dog', 
+'Norbit', 'Chicken Little', 'Fat Albert', 'Nutty Professor', 'Stomp the Yard', 
+'Drumline', 'Just Getting Started', 'Lady Bird', 'The Star', 'Princess and the Frog', 
+'Dear White People', 'Get Out', 'It', 'Happy Death Day', 'The Polar Express', 'The Dark Knight Rises', 
+'The Godfather', 'Comming to America', 'The Matrix', 'Forrest Gump', 
+'Saving Private Ryan', 'Glory', 'Gladiator', 'Terminator', 'Cinema Paradiso', 'Allen', 
+'Django Unchained', 'M', 'Braveheart', 'Your Name', 'To Kill a Mockingbird','Toy Story 3', 
+'Scarface', 'Snatch', 'Up', 'Batman Begins', 'My Neighbor Totoro', 'Inside Out',
+'Room', 'The Elephant Man', 'Gone with the Wind', 'Gone Girl', 'La La Land',
+'Jurassic Park', 'Mad Max:Fury Road', 'Monsters, Inc', 'Catch Me if You Can',
+'Jaws', 'The Help', 'The Wizard of Oz', 'The Bourne Ultimatum', 
+'Star Wars: The Force Awakens', '12 Years a Slave', 'Million Dollar Baby',
+'Logan', 'Into the Wild', 'How to Train Your Dragon', 'Rebecca',
+'Finding Nemo', 'Finding Dory', 'Fargo','The General', 'Hangover',
+'The Elephant Man', 'The Great Escape', 'Ran', 'Heat', 'Wonder Woman',
+'Baby Driver', 'Spider-Man: Homecoming', 'Justice Leauge',
+'Thor: Ragnarok', 'Bratz', 'Cheetah Girls', 'Twitches', 'Twlight', 
+'John Wick: Chapter 2', 'The Fate of Furious', 'Beauty and the Beast',
+'Cars 3', 'The Dark Tower', 'The Disaster Artist', 'American Made', 
+'Despecable Me 3', 'Atomic Blonde', 'Pitch Perfect 3', 'Baywatch',
+'Guardians', 'Geostorm', 'Kong:Skull Island','Doctor Strange',
+'Captain America: Civil War', 'Pan', 'Warcraft', 'Grown Ups', 'Cinderella']
