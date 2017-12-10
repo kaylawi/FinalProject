@@ -1,4 +1,4 @@
-OMDB_ACCESS_TOKEN= 'http://www.omdbapi.com/?i=tt3896198&apikey=d4afab83'
+OMDB_ACCESS_TOKEN= 'http://www.omdbapi.com/?i=tt3896198&apikey=d4afab83&t='
 
 
 movie_titles = ['White Chicks', 'Elf', 'Mission Impossible', 'Suicide Squad', 'Man Bites Dog', 

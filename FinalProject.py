@@ -10,11 +10,9 @@ import itertools
 import collections
 import json
 import sqlite3 
-import omdb
-import facebook
-import facebook_info
+#import googlemaps_geocoding 
 import omdb_info
-#import googlemaps 
+import omdb
 
 
 ##Your name: Kayla Williams
@@ -32,56 +30,25 @@ except:
 	CACHE_DICTION = {} # creates a new variable for it 
 
 
-##### SETUP CODE:
-# Authentication information should be in OMDb_info file
+##### GOOGLE MAPS GEOCODING SETUP CODE:
+# def get_location(city):
+# 	if city in CACHE_DICTION:
+# 		print('cached')
+# 		results= CACHE_DICTION[city]
+# 	else:
+# 		baseurl= 'https://maps.googleapis.com/maps/api/geocode/json?address='
+# 		params={'key':googlemaps_geocoding.access_token_geocoding, 'outputformat': city}
+# 		fullurl='baseurl'+params
+# 		gresponse=json.loads(fullurl)
+# 		CACHE_DICTION[city]= gresponse
+# 		jsd=json.dumps(CACHE_DICTION)
+# 		cache_file= open(CACHE_FNAME,'w')
+# 		cache_file.write(jsd)
+# 		cache_file.close()
+# 	return results
+# g = get_location('Pasadena,California')
 
-# access_token = omdb_info.access_token 
-
-
-##### FACEBOOK SETUP CODE:
-# Authentication information should be in a facebook_info file...
-
-access_token = facebook_info.FACEBOOK_access_token
-
-graph = facebook.GraphAPI(access_token)
-user = graph.get_object('me') 
-print(user)
-
-
-
-# ##### END FACEBOOK SET UP CODE
-
-# ##### FACEBOOK INTERACTIONS 
-
-
-def get_user_interactions(user):
-
-
-	if user in CACHE_DICTION:
-		print('cached')
-		facebook_results = CACHE_DICTION[user] # grab data from cache
-	else:
-		print('getting data from internet') 
-		facebook_results = graph.get_object(id = user)
-		
-		all_fields = ['message', 'created_time', 'description', 'caption', 'link', 'place', 'status_type']
-		all_fields = ','.join(all_fields)
-		posts = graph.get_connections(id = 'me', connection_name = 'posts', fields = all_fields) # + posts['paging']['cursors']['after'])
-		posts = requests.get(posts['paging']['next']).json() #attempt to make a request to next page of data,if exists
-		print(posts) 
-
-
-		CACHE_DICTION[user] = posts # save user results into cache
-		jsd = json.dumps(CACHE_DICTION) #save it using json 
-		cache_file = open(CACHE_FNAME, 'w') #open up file 
-		cache_file.write(jsd)# show file in a way that user can see it, string
-		cache_file.close() #ends file, close it 
-
-
-	return facebook_results 
-data = get_user_interactions(user['id'])
-
-  ## Database consist of Users table		
+## Database consist of Users table		
 
 # conn = sqlite3.connect('FinalProject.sqlite')
 # cur = conn.cursor() #connects to database 
@@ -117,8 +84,8 @@ def get_movie_info():
 	else:
 		movie_info = []
 		for movie in omdb_info.movie_titles:
-			print(movie)
-			movie_info.append(json.loads(requests.get(url + movie).text))
+			url = omdb_info.OMDB_ACCESS_TOKEN + movie.replace(" ", "+")
+			movie_info.append(requests.get(url).json())
 
 		CACHE_DICTION['movie_info'] = movie_info # save user results into cache
 		jsd = json.dumps(CACHE_DICTION) #save it using json 
