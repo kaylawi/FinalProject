@@ -80,7 +80,7 @@ url = omdb_info.OMDB_ACCESS_TOKEN
 def get_movie_info():
 	if 'movie_info' in CACHE_DICTION:
 		movie_info = CACHE_DICTION['movie_info']
-		#print(movie_info)
+		print(len(movie_info))
 	else:
 		movie_info = []
 		for movie in omdb_info.movie_titles:
